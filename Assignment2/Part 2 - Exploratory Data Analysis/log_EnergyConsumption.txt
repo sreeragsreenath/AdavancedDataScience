@@ -125,3 +125,8 @@
 2018-03-16 23:40:38,613 - DEBUG - Loading Data into Dataframe
 2018-03-16 23:40:39,553 - DEBUG - Added Number of Seconds From Midnight column 
 2018-03-16 23:40:40,402 - DEBUG - Number of Null values
+2018-03-18 18:23:57,040 - DEBUG - Loading Data into Dataframe
+2018-03-18 18:25:05,056 - DEBUG - Added Number of Seconds From Midnight column 
+2018-03-18 18:25:05,571 - DEBUG - Number of Null values
+2018-03-18 18:27:48,707 - DEBUG - Checking any Missing Value 
+2018-03-18 18:27:52,256 - DEBUG - Creating table using pivottable 
