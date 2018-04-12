@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+
+    	<style type="text/css">  
+    		ul.rightside li { display : inline; }
+    	</style>
+
+
+ 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+		<!-- Compiled and minified JavaScript -->
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+          
+
+      	<!--Let browser know website is optimized for mobile-->
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+		<div class="navbar-fixed teal">
+    		  <nav>
+	      		<div class="nav-wrapper teal">
+	        		<a href="#!" class="brand-logo" style = "margin-left:50px">  </a>
+		        	<ul class="rightside">
+		          		<li><a href="#">HOME</a></li>
+		          		<li><a href="#">ABOUT US </a></li>
+		                <li><a href="#">BLOG</a></li>
+		                <li><a href="#">CONTACT US</a></li>
+		                  
+		        	</ul>
+	      		</div>
+	    	  </nav>
+	    </div>
+
+
+		<script type="text/javascript">
+
+		function ValidateForm(frm) {
+			if (frm.FirstName.value == "")
+			{ alert('First Name is required.'); frm.FirstName.focus(); return false; }
+			
+			if (frm.LastName.value == "") 
+			{ alert('Last Name is required.'); frm.LastName.focus(); return false; }
+
+			if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
+			
+			if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
+			
+			
+
+			if (frm.FromPassword.value == "")
+			{ alert('Password is required. ')
+
+			}
+
+
+
+
+
+		</script>	
+		</head>
+		<body>
+		<form action="//submit.form" id="SignUp100" method="post" onsubmit="return ValidateForm(this);">
+
+
+		<table border="0" cellpadding="5" cellspacing="0" width="600">
+		<tr> <td>
+		<label for="FirstName">First</label>, <label for="LastName">Last Name*:</label>
+		</td> <td>
+		<input name="FirstName" type="text" maxlength="60" style="width: 146px;" />
+		<input name="LastName" type="text" maxlength="60" style="width: 146px;" />
+		</td> </tr> <tr> <td>
+		<label for="Organization">Organization:</label>
+		</td> <td>
+		<input name="Organization" type="text" maxlength="60" style="width: 300px;" />
+		</td> </tr> <tr> <td>
+		<label for="FromEmailAddress">Email address*:</label>
+		</td> <td>
+		<input name="FromEmailAddress" type="text" maxlength="60" style="width: 300px;" />
+		</td> </tr> <tr> <td>
+		<label for="WorkPhone">Work Phone:</label>
+		</td> <td>
+		<input name="WorkPhone" type="text" maxlength="43" style="width: 250px;" />
+		</td> </tr> <tr> <td>
+		<label for="HomePhone">Home Phone:</label>
+		</td> <td>
+		<input name="HomePhone" type="text" maxlength="43" style="width: 250px;" />
+		</td> </tr> <tr> <td>
+		<label for="CellPhone">Cell Phone:</label>
+		</td> <td>
+		<input name="CellPhone" type="text" maxlength="43" style="width: 250px;" />
+		</td> </tr> <tr> <td>
+		<label for="Fax">Fax:</label>
+		</td> <td>
+		<input name="Fax" type="text" maxlength="43" style="width: 250px;" />
+		</td> </tr> <tr> <td>
+		<label for="StreetAddress1">Address 1*:</label>
+		</td> <td>
+		<input name="StreetAddress1" type="text" maxlength="120" style="width: 350px;" />
+		</td> </tr> <tr> <td>
+		<label for="StreetAddress2">Address 2:</label>
+		</td> <td>
+		<input name="StreetAddress2" type="text" maxlength="120" style="width: 350px;" />
+		</td> </tr> <tr> <td>
+		<label for="City">City*:</label>
+		</td> <td>
+		<input name="City" type="text" maxlength="120" style="width: 300px;" />
+		</td> </tr> <tr> <td>
+		<label for="State">State/Province:</label>
+		</td> <td>
+		<input name="State" type="text" maxlength="120" style="width: 300px;" />
+		</td> </tr> <tr> <td>
+		<label for="Zip">Zip/Postal Code:</label>
+		</td> <td>
+		<input name="Zip" type="text" maxlength="30" style="width: 100px;" />
+		</td> </tr> <tr> <td>
+		<label for="Country">Country*:</label>
+		</td> <td>
+		<input name="Country" type="text" maxlength="120" style="width: 300px;" />
+		</td> </tr> <tr> <td>
+		* - required fields
+		</td> <td>
+		<div style="float: right">
+		<a href=" " id=" " title="form to email">form to email</a></div>
+		<script src=" " type="text/javascript"></script>
+		<input name="skip_Submit" type="submit" value="Submit" />
+		</td> </tr>
+		</table>
+		</form>
+
+</body>
+</html>
