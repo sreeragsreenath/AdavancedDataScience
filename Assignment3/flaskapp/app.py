@@ -24,7 +24,7 @@ def main():
 	data = {}
 	data['ok'] = "cool"
 	data['ok2'] = 'cool2'
-	return render_template('index.html',data=data)
+	return render_template('upload_file.html',data=data)
 
 @app.route("/showSignUp")
 def showSignUp():
@@ -77,7 +77,7 @@ def login():
 					error = "Invalid Credential"
 		else:
 			error = "Invalid Credential"
-	return render_template('login_new.html', error=error)
+	return render_template('login_new2.html', error=error)
 
 @app.route('/logout')
 def logout():
@@ -87,7 +87,7 @@ def logout():
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-	return render_template('dashboard.html', error=error)
+	return render_template('dash_home.html')
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == "__main__":
