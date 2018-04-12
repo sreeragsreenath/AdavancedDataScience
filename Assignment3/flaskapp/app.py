@@ -5,7 +5,6 @@ from werkzeug import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 mysql = MySQL()
-
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
@@ -16,78 +15,136 @@ mysql.init_app(app)
 conn = mysql.connect()
 cursor = conn.cursor()
 
-
+# All Routes
 
 @app.route("/")
 def main():
 	print("lol")
 	data = {}
-	data['ok'] = "cool"
-	data['ok2'] = 'cool2'
+	data['title'] = "Home Page"
 	return render_template('index.html',data=data)
 
-@app.route("/showSignUp")
-def showSignUp():
-	return render_template('signup.html')
+@app.route("/register")
+def register(message=""):
+	data = {}
+	data['title'] = "Register"
+	data['message'] = message
+	return render_template('register.html', data=data)
 
-@app.route('/signUp',methods=['POST'])
-def signUp():
-
-    # read the posted values from the UI
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _password = request.form['inputPassword']
-    _hashed_password = generate_password_hash(_password)
-    print(_hashed_password)
-    
-    # validate the received values
-    cursor.callproc('sp_createUser',(_name,_email,_hashed_password))
-    data = cursor.fetchall()
-    if len(data) is 0:
-    	conn.commit()
-    	return json.dumps({'message':'User created successfully !'})
-    else:
-    	return json.dumps({'error':str(data[0])})
+@app.route('/signup',methods=['POST'])
+def signup():
+	print("Abhi")
+	# read the posted values from the UI
+	if request.method == 'POST':
+		print("Abhi")
+		_name = request.form['inputName']
+		_email = request.form['inputEmail']
+		_password = request.form['inputPassword']
+		_hashed_password = generate_password_hash(_password)
+		print(_hashed_password)
+		print("Abhi")
+		# validate the received values
+		cursor.callproc('sp_createUser',(_name,_email,_hashed_password))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			conn.commit()
+			data2 = {}
+			data2['message'] = "Succuessfully Registered"
+			return render_template('login_new2.html', data=data2)
+		else:
+			return redirect("/register")
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login(message=""):
+	data = {}
+	data['message'] = message
 	error = None
 	if 'user_name' in session:
 		return redirect("/dashboard")
 	if request.method == 'POST':
+		data = {}
+		data['title'] = "Login Page"
 		username_form  = request.form['inputEmail']
 		password_form  = request.form['inputPassword']
 
 		cursor.execute("SELECT * FROM tbl_user WHERE user_username = %s;", [username_form]) # CHECKS IF USERNAME EXSIST
 		
 		k = cursor.fetchone()
-		print(k)
 		if (k):
-			cursor.execute("SELECT user_password FROM tbl_user WHERE user_username = %s;", [username_form])# FETCH THE HASHED PASSWORD
+			cursor.execute("SELECT * FROM tbl_user WHERE user_username = %s;", [username_form])# FETCH THE HASHED PASSWORD
 			y =  cursor.fetchall()
 			print(y)
 			for row in y:
-				print(row[0], " ",password_form)
-				if check_password_hash(row[0], password_form):
-					session['user_name'] = request.form['inputEmail']
-					error = "signedin"
-					print(session)
-					return redirect("/")
+				if check_password_hash(row[3], password_form):
+					session['userEmail'] = request.form['inputEmail']
+					session['userName'] = row[1]
+					session['userId'] = row[0]
+					data['message'] = "signedin"
+					return redirect("/dashboard")
 				else:
-					error = "Invalid Credential"
+					data['message'] = "Invalid Credential"
+					return render_template('login_new2.html', data=data)
 		else:
 			error = "Invalid Credential"
-	return render_template('login_new.html', error=error)
+	return render_template('login_new2.html', data=data)
 
 @app.route('/logout')
 def logout():
-	session.pop('user_name', None)
+	session.pop('userEmail', None)
+	session.pop('userName', None)
+	session.pop('userId', None)
 	print(session)
 	return redirect("/login")
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-	return render_template('dashboard.html', error=error)
+	data = {}
+	data['auth'] = authLevel()
+	return render_template('dash_home.html', data=data)
+
+
+# Helper function for authentication
+
+def isAdmin():
+	cursor.execute("SELECT * FROM userauth WHERE userid = %s AND authid=1;", session['userId'])# FETCH THE HASHED PASSWORD
+	query = cursor.fetchone()
+	if (query):
+		return True
+	else:
+		return False
+
+def isCompany():
+	cursor.execute("SELECT * FROM userauth WHERE userid = %s AND authid=2;", session['userId'])# FETCH THE HASHED PASSWORD
+	query = cursor.fetchone()
+	if (query):
+		return True
+	else:
+		return False
+
+def isSingle():
+	cursor.execute("SELECT * FROM userauth WHERE userid = %s AND authid=3;", session['userId'])# FETCH THE HASHED PASSWORD
+	query = cursor.fetchone()
+	if (query):
+		return True
+	else:
+		return False
+
+def authLevel():
+	auth = {}
+	auth['userName'] = session['userName']
+	if(isAdmin()):
+		auth['name'] = "Administrator"
+		auth['type'] = "admin"
+		return auth
+	elif(isCompany()):
+		auth['name'] = "Company"
+		auth['type'] = "comp"
+		return auth
+	elif(isSingle()):
+		auth['name'] = "Single User"
+		auth['type'] = "single"
+		return auth
+
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == "__main__":

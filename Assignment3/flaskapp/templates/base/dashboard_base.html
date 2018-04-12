@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+
+  <!-- Favicons-->
+  <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
+  <!-- Favicons-->
+  <link rel="apple-touch-icon-precomposed" href="images/favicon/apple-touch-icon-152x152.png">
+  <!-- For iPhone -->
+  <meta name="msapplication-TileColor" content="#00bcd4">
+  <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+  <!-- For Windows Phone -->
+
+
+  <!-- CORE CSS-->
+  <link href="../static/material/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="../static/material/css/style.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <!-- Custome CSS-->    
+  <link href="../static/material/css/custom/custom.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+  <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+  <link href="../static/material/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="../static/material/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="../static/material/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <style type="text/css">
+     body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  #main {
+    flex: 1 0 auto;
+  }
+  </style>
+    <title>{% block title %}{{data.title}}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+	 <header id="header" class="page-topbar">
+        <!-- start header nav-->
+        <div class="navbar-fixed">
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">                      
+                      <li><h1 class="logo-wrapper"><a href="/" class="brand-logo darken-1">InGPSLock</a> <span class="logo-text">InGPSLock</span></h1></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- end header nav-->
+  </header>
+  <!-- END HEADER -->
+  <!-- START MAIN -->
+  <div id="main">
+    <!-- START WRAPPER -->
+    <div class="wrapper">
+
+      <!-- START LEFT SIDEBAR NAV-->
+      <aside id="left-sidebar-nav">
+        <ul id="slide-out" class="side-nav fixed leftside-navigation">
+            <li class="user-details cyan darken-2">
+            <div class="row">
+                <div class="col col s4 m4 l4">
+                    <img src="../static/images/icon_user_whiteongrey.png" alt="" class="circle responsive-img valign profile-image">
+                </div>
+                <div class="col col s8 m8 l8">
+                    <ul id="profile-dropdown" class="dropdown-content">
+                        <li><a href="#"><i class="mdi-action-face-unlock"></i> Profile</a>
+                        </li>
+                        <li><a href="#"><i class="mdi-action-settings"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/logout"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">{{data.auth.userName}}<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                    <p class="user-roal">{{data.auth.name}}</p>
+                </div>
+            </div>
+            </li>
+            <li class="bold"><a href="/dashboard" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i>Home</a>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Application</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="layout-fullscreen.html">Data Input</a>
+                                </li>
+                                <li><a href="layout-horizontal-menu.html">File Upload</a>
+                                </li>
+                                <li><a href="layout-horizontal-menu.html">Batch File Upload</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            
+        </ul>
+        <a href="#" data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
+        </aside>
+      <!-- END LEFT SIDEBAR NAV-->
+      <section id="content">
+        <div class="container">
+          <div class="section">
+    {% block content %}
+    {% endblock %}
+    </div>
+            <!-- Floating Action Button -->
+        </div>
+        <!--end container-->
+      </section>
+
+       </div>
+    <!-- END WRAPPER -->
+
+  </div>
+  <!-- END MAIN -->
+	    
+  <!-- START FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+        <span>Copyright © 2015 <a class="grey-text text-lighten-4" target="_blank">Apha Beta Gamma</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4">Apha Beta Gamma</a></span>
+        </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+        {% block footer %}{% endblock %}
+          <!-- ================================================
+	    Scripts
+	    ================================================ -->
+
+    
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="../static/material/js/plugins/jquery-1.11.2.min.js"></script>    
+    <!--materialize js-->
+    <script type="text/javascript" src="../static/material/js/materialize.min.js"></script>
+    <!--prism
+    <script type="text/javascript" src="../static/material/js/prism/prism.js"></script>-->
+    <!--scrollbar-->
+    <script type="text/javascript" src="../static/material/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!-- chartist -->
+    <script type="text/javascript" src="../static/material/js/plugins/chartist-js/chartist.min.js"></script>   
+    
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="../static/material/js/plugins.min.js"></script>
+    <!--custom-script.js - Add your own theme custom JS-->
+    <script type="text/javascript" src="../static/material/js/custom-script.js"></script>
+	</body>
+</html>
