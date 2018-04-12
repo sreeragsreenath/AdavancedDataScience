@@ -12,7 +12,7 @@
   	<div class="center">
 	    <div id="login-page" class="row">
 	    <div class="col s3 offset-s4 z-depth-4 card-panel">
-	      <form class="login-form">
+	      <form class="login-form" action="/signup" method="post" >
 	        <div class="row">
 	          <div class="input-field col s12 center">
 	            <h4>Register</h4>
@@ -22,21 +22,21 @@
 	        <div class="row margin">
 	          <div class="input-field col s12">
 	            <i class="mdi-social-person-outline prefix"></i>
-	            <input id="username" type="text">
+	            <input id="username" type="text" name="inputName">
 	            <label for="username" class="center-align">Username</label>
 	          </div>
 	        </div>
 	        <div class="row margin">
 	          <div class="input-field col s12">
 	            <i class="mdi-communication-email prefix"></i>
-	            <input id="email" type="email">
+	            <input id="email" type="email" name="inputEmail">
 	            <label for="email" class="center-align">Email</label>
 	          </div>
 	        </div>
 	        <div class="row margin">
 	          <div class="input-field col s12">
 	            <i class="mdi-action-lock-outline prefix"></i>
-	            <input id="password" type="password">
+	            <input id="password" type="password" name="inputPassword">
 	            <label for="password">Password</label>
 	          </div>
 	        </div>
@@ -49,10 +49,10 @@
 	        </div>
 	        <div class="row">
 	          <div class="input-field col s12">
-	            <a href="index.html" class="btn waves-effect waves-light col s12">Register Now</a>
+	            <button  class="btn waves-effect waves-light col s12" type="submit">Register Now</button>
 	          </div>
 	          <div class="input-field col s12">
-	            <p class="margin center medium-small sign-up">Already have an account? <a href="page-login.html">Login</a></p>
+	            <p class="margin center medium-small sign-up">Already have an account? <a href="/login">Login</a></p>
 	          </div>
 	        </div>
 	      </form>

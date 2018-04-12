@@ -35,7 +35,7 @@
     flex: 1 0 auto;
   }
   </style>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{{data.title}}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
@@ -76,12 +76,12 @@
                         <li><a href="/logout"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
                         </li>
                     </ul>
-                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">{{name}}<i class="mdi-navigation-arrow-drop-down right"></i></a>
-                    <p class="user-roal">{{auth}}</p>
+                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">{{data.auth.userName}}<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                    <p class="user-roal">{{data.auth.name}}</p>
                 </div>
             </div>
             </li>
-            <li class="bold"><a href="index.html" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i>Home</a>
+            <li class="bold"><a href="/dashboard" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i>Home</a>
             </li>
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
