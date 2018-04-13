@@ -5,6 +5,30 @@ from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
 
+# Boto aws connection
+
+if False:
+	BUCKET_NAME = 'alphabetagamma-assignment3' # replace with your bucket name
+	KEY = 'model/RandomForestClassifier.pckl' # replace with your object key
+
+	import boto
+	import sys, os
+	from boto.s3.key import Key
+
+	LOCAL_PATH = 'static/'
+	
+
+	bucket_name = 'alphabetagamma-assignment3'
+	# connect to the bucket
+	conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
+	                AWS_SECRET_ACCESS_KEY)
+	bucket = conn.get_bucket(bucket_name)
+	# go through the list of files
+	bucket_list = bucket.list()
+	for l in bucket_list:
+	  keyString = str(l.key)
+	  l.get_contents_to_filename(LOCAL_PATH+keyString)
+
 
 app = Flask(__name__)
 
