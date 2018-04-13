@@ -1,6 +1,10 @@
+# Flask Libraries
 from flask import redirect, Flask, render_template, json, request, session, url_for
 from flask.ext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from flask_restful import Resource, Api
+
 
 app = Flask(__name__)
 
@@ -15,6 +19,62 @@ mysql.init_app(app)
 conn = mysql.connect()
 cursor = conn.cursor()
 
+#---------------------------------------------------------------------
+# Machine Leanring Stuff
+
+# Data Collection and Transformations
+import numpy as np
+import pandas as pd
+import datetime as dt
+import time
+import pickle
+from sklearn.preprocessing import Imputer, StandardScaler
+
+
+# Machine Learning
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.decomposition import PCA
+from sklearn.model_selection import learning_curve, validation_curve
+
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.kernel_ridge import KernelRidge
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import ExtraTreeRegressor
+from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.svm import SVR
+from sklearn.model_selection import GridSearchCV
+from sklearn.neural_network import MLPRegressor
+
+from sklearn.pipeline import Pipeline
+# Plotting 
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+plt.rcParams['figure.figsize'] = [10,8]
+import seaborn as sns
+
+def predict_single(data):
+	filename = "static/models/RandomForestRegressor.pckl"
+	pred = {}
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
+	filename = "static/models/RandomForestClassifier.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['location'] = loaded_model.predict(data.reshape(1, -1))
+
+	return pred
+
+def predictDf(data):
+	df = data.drop(['FLOOR', 'BUILDINGID','SPACEID','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
+	filename = "static/models/RandomForestRegressor.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred = loaded_model.predict(df)
+
+	return pred
+
+#---------------------------------------------------------------------
 # All Routes
 
 @app.route("/")
@@ -102,7 +162,62 @@ def dashboard():
 	data['auth'] = authLevel()
 	return render_template('dash_home.html', data=data)
 
+@app.route('/singledata', methods=['GET','POST'])
+def singledata():
+	data = {}
+	data['auth'] = authLevel()
+	data['pred'] = ""
+	if request.method == 'POST':
+		formdata  = request.form['inputdata']
+		
+		wapArray = formdata.split(",")
+		wapArray = list(map(int, wapArray))
+		wapArray = np.asarray(wapArray)
+		data['pred'] = predict_single(wapArray)
+		return render_template('upload_single.html', data=data)
+	return render_template('upload_single.html', data=data)
 
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1].lower() in ['csv','excel']
+
+@app.route('/singlefile', methods=['GET','POST'])
+def singlefile():
+	data = {}
+	data['auth'] = authLevel()
+	data['pred'] = ""
+	data['filename'] =""
+	data['isResults'] = False
+	if request.method == 'POST':
+		# check if the post request has the file part
+		if 'file' not in request.files:
+			print('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			print('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			#file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			#return redirect(url_for('uploaded_file',filename=filename))
+			data['filename'] = filename
+			trainingData= pd.read_csv(file)
+			data['results'] = predictDf(trainingData)
+			data['resultsArray'] = np.asarray(data['results'])
+			data['isResults'] = True
+			print(data['results'])
+			return render_template('upload_file.html', data=data)
+	return render_template('upload_file.html', data=data)
+
+#-------------------------------------------------------------------
+# API definition
+
+
+
+#-------------------------------------------------------------------
 # Helper function for authentication
 
 def isAdmin():
@@ -147,5 +262,8 @@ def authLevel():
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+
 if __name__ == "__main__":
 	app.run()
+

@@ -1,0 +1,29 @@
+{% extends "base/dashboard_base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel">
+			<h4 class="header2">Batch File Upload</h4>
+			<div class="row">
+				<form action="/login" method="get">
+					<div class="row">
+						<div class="input-field col s12">
+							<input id="name" name="inputdata" type="text">
+							<label for="first_name">Input Data</label>
+						</div>
+					</div>
+					<div class="file-field input-field">
+						<div class="btn">
+							<span>Upload File</span>
+							<input type="file" multiple>
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

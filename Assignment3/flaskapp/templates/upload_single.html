@@ -7,11 +7,11 @@
 		<div class="card-panel">
 			<h4 class="header2">Single Upload</h4>
 			<div class="row">
-				<form class="col s12">
+				<form class="col s12" action="/singledata" method="post">
 					<div class="row">
 						<div class="input-field col s12">
 							<input id="name" name="inputdata" type="text">
-							<label for="first_name">Input Data</label>
+							<label for="inputdata">Input Data</label>
 						</div>
 					</div>
 					<div class="row">
@@ -21,6 +21,11 @@
 							</button>
 						</div>
 					</div>
+					<br>
+					{'latlot': array([[ -7336.23506743, 4864817.95637558]]), 'location': array([[3., 2.]])}
+					<br>
+					BUILDINGID : {{data.pred}}<br>
+					FLOOR : {{data.pred}}
 				</div>
 			</form>
 		</div>

@@ -24,6 +24,8 @@
   <link href="../static/material/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
   <link href="../static/material/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
   <link href="../static/material/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="../static/material/js/plugins/data-tables/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+
   <style type="text/css">
      body {
     display: flex;
@@ -88,11 +90,11 @@
                     <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Application</a>
                         <div class="collapsible-body">
                             <ul>
-                                <li><a href="layout-fullscreen.html">Data Input</a>
+                                <li><a href="/singledata">Data Input</a>
                                 </li>
-                                <li><a href="layout-horizontal-menu.html">File Upload</a>
+                                <li><a href="/singlefile">File Upload</a>
                                 </li>
-                                <li><a href="layout-horizontal-menu.html">Batch File Upload</a>
+                                <li><a href="/batchfile">Batch File Upload</a>
                                 </li>
                             </ul>
                         </div>
@@ -146,11 +148,34 @@
     <!--scrollbar-->
     <script type="text/javascript" src="../static/material/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <!-- chartist -->
-    <script type="text/javascript" src="../static/material/js/plugins/chartist-js/chartist.min.js"></script>   
+    <!-- <script type="text/javascript" src="../static/material/js/plugins/chartist-js/chartist.min.js"></script>    -->
     
     <!--plugins.js - Some Specific JS codes for Plugin Settings-->
     <script type="text/javascript" src="../static/material/js/plugins.min.js"></script>
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="../static/material/js/custom-script.js"></script>
+    <script type="text/javascript" src="../static/material/js/plugins/data-tables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/material/js/plugins/data-tables/data-tables-script.js"></script>
+    <script type="text/javascript" src="../static/js/table2csv.js"></script>
+    <script type="text/javascript">
+        /*Show entries on click hide*/
+        $(document).ready(function(){
+            $(".dropdown-content.select-dropdown li").on( "click", function() {
+                var that = this;
+                setTimeout(function(){
+                if($(that).parent().hasClass('active')){
+                        $(that).parent().removeClass('active');
+                        $(that).parent().hide();
+                }
+                },100);
+            });
+        });
+    </script>
+    <script>
+      /* global $ */
+      $("#dl").click(function(){
+        $("#simplesree").table2csv();
+      })
+    </script>
 	</body>
 </html>
