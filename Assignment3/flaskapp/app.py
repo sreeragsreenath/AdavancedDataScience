@@ -91,9 +91,12 @@ def predict_single(data):
 def predictDf(data):
 	df = data.drop(['FLOOR', 'BUILDINGID','SPACEID','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
 	filename = "static/models/RandomForestRegressor.pckl"
+	pred = {}
 	loaded_model = pickle.load(open(filename, 'rb'))
-	pred = loaded_model.predict(df)
-
+	pred['latlot'] = loaded_model.predict(df)
+	filename = "static/models/RandomForestClassifier.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['location'] = loaded_model.predict(df)
 	return pred
 
 #---------------------------------------------------------------------
