@@ -92,7 +92,9 @@
                             <ul>
                                 <li><a href="/singledata">Data Input</a>
                                 </li>
+                                {% if data.auth.type=="admin" or data.auth.type=="comp"%}
                                 <li><a href="/singlefile">File Upload</a>
+                                  {%endif%}
                                 </li>
                                 <li><a href="/batchfile">Batch File Upload</a>
                                 </li>

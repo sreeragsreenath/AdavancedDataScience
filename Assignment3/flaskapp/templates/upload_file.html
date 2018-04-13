@@ -30,74 +30,74 @@
 </div>
 {% if data.isResults %}
 <div class="section">
-<div class="row">
-	
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-			<h4 class="header2">Results</h4>
-			<div class="container">
-			<div class="row">
-				<div id="table-datatables">
-					<h4 class="header">Data Tables</h4>
+	<div class="row">
+		
+		<div class="col s12 m12 l12">
+			<div class="card-panel">
+				<h4 class="header2">Results</h4>
+				<div class="container">
 					<div class="row">
-						<button id="dl" class="btn btn-primary">Download</button>
-						<div class="col s12 m8 l12">
-							<table id="simplesree" class="bordered" cellspacing="0">
-								<thead>
-									<tr>
-										<th>Latitude</th>
-										<th>Logitude</th>
-									</tr>
-								</thead>
+						<div id="table-datatables">
+							<h4 class="header">Data Tables</h4>
+							<div class="row">
+								<button id="dl" class="btn btn-primary">Download</button>
+								<div class="col s12 m8 l12">
+									<table id="simplesree" class="bordered" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+											</tr>
+										</thead>
 
-								<tfoot>
-									<tr>
-										<th>Latitude</th>
-										<th>Logitude</th>
-									</tr>
-								</tfoot>
+										<tfoot>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+											</tr>
+										</tfoot>
 
-								<tbody>
-									{% for coord in data.results %}
-									<tr>
-										<td>{{ coord[0] }}</td>
-										<td>{{ coord[1] }}</td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-							<table id="data-table-simple2" class="hide" cellspacing="0">
-								<thead>
-									<tr>
-										<th>Latitude</th>
-										<th>Logitude</th>
-									</tr>
-								</thead>
+										<tbody>
+											{% for coord in data.results %}
+											<tr>
+												<td>{{ coord[0] }}</td>
+												<td>{{ coord[1] }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+									<table id="data-table-simple2" class="hide" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+											</tr>
+										</thead>
 
-								<tfoot>
-									<tr>
-										<th>Latitude</th>
-										<th>Logitude</th>
-									</tr>
-								</tfoot>
+										<tfoot>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+											</tr>
+										</tfoot>
 
-								<tbody>
-									{% for coord in data.results %}
-									<tr>
-										<td>{{ coord[0] }}</td>
-										<td>{{ coord[1] }}</td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
+										<tbody>
+											{% for coord in data.results %}
+											<tr>
+												<td>{{ coord[0] }}</td>
+												<td>{{ coord[1] }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div> 
 					</div>
-				</div> 
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-</div>
 </div>
 {% endif %}
 {% endblock %}

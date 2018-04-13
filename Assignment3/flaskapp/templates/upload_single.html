@@ -21,15 +21,62 @@
 							</button>
 						</div>
 					</div>
-					<br>
-					{'latlot': array([[ -7336.23506743, 4864817.95637558]]), 'location': array([[3., 2.]])}
-					<br>
-					BUILDINGID : {{data.pred}}<br>
-					FLOOR : {{data.pred}}
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+{% if data.isResults %}
+<div class="section">
+	<div class="row">
+		
+		<div class="col s12 m12 l12">
+			<div class="card-panel">
+				<h4 class="header2">Results</h4>
+				<div class="container">
+					<div class="row">
+						<div id="table-datatables">
+							<h4 class="header">Data Tables</h4>
+							<div class="row">
+								<button id="dl" class="btn btn-primary">Download</button>
+								<div class="col s12 m8 l12">
+									<table id="simplesree" class="bordered" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+												<th>Building</th>
+												<th>Floor</th>
+											</tr>
+										</thead>
+
+										<tfoot>
+											<tr>
+												<th>Latitude</th>
+												<th>Logitude</th>
+												<th>Building</th>
+												<th>Floor</th>
+											</tr>
+										</tfoot>
+
+										<tbody>
+											<tr>
+												<td>{{data.pred['latlot'][0][0]}}</td>
+												<td>{{data.pred['latlot'][0][1]}}</td>
+												<td>{{data.pred['location'][0][0]}}</td>
+												<td>{{data.pred['location'][0][1]}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
 
 {% endblock %}

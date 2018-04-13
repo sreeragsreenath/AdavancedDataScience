@@ -8,8 +8,6 @@ from flask_restful import Resource, Api
 # Boto aws connection
 
 if False:
-	BUCKET_NAME = 'alphabetagamma-assignment3' # replace with your bucket name
-	KEY = 'model/RandomForestClassifier.pckl' # replace with your object key
 
 	import boto
 	import sys, os
@@ -191,6 +189,7 @@ def singledata():
 	data = {}
 	data['auth'] = authLevel()
 	data['pred'] = ""
+	data['isResults'] = False
 	if request.method == 'POST':
 		formdata  = request.form['inputdata']
 		
@@ -198,6 +197,7 @@ def singledata():
 		wapArray = list(map(int, wapArray))
 		wapArray = np.asarray(wapArray)
 		data['pred'] = predict_single(wapArray)
+		data['isResults'] = True
 		return render_template('upload_single.html', data=data)
 	return render_template('upload_single.html', data=data)
 
