@@ -1,5 +1,5 @@
 # Flask Libraries
-from flask import redirect, Flask, render_template, json, request, session, url_for
+from flask import redirect, Flask, render_template, json, request, session, url_for, jsonify
 from flask.ext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -215,7 +215,21 @@ def singlefile():
 #-------------------------------------------------------------------
 # API definition
 
-
+@app.route("/getLocation", methods=["POST"])
+def getLocation():
+	if request.json['wapData']:
+		parameters = request.json['wapData']
+		wapArray = parameters.split(",")
+		if len(wapArray) == 520:
+			wapArray = list(map(int, wapArray))
+			wapArray = np.asarray(wapArray)
+			data = {}
+			data['pred'] = predict_single(wapArray)
+			return str(data['pred'])
+		else:
+			return "Incorrect number of parameters \nPlease send in 520 wap position in order of wap001 to wap520"
+	else:
+		return "Wrong Parameter passed"
 
 #-------------------------------------------------------------------
 # Helper function for authentication
