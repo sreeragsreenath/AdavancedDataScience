@@ -74,11 +74,7 @@ from sklearn.neural_network import MLPRegressor
 
 from sklearn.pipeline import Pipeline
 # Plotting 
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-plt.rcParams['figure.figsize'] = [10,8]
-import seaborn as sns
+
 
 def predict_single(data,model):
 	pred = {}
