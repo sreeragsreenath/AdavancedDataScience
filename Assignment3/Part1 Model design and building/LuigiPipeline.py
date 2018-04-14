@@ -94,23 +94,28 @@ class DataPreProcessing(luigi.Task):
 
 #normal method
 def rmse(correct,estimated):
-	rmse_val = np.sqrt(mean_squared_error(correct,estimated)) 
-	return rmse_val
+		    rmse_val = np.sqrt(mean_squared_error(correct,estimated)) 
+		    return rmse_val
 
-	# Generating the Table Frame for metrics
-	evluation_table = pd.DataFrame({  'Model_desc':[],
-	                        'Model_param':[],
-	                        'r2_train': [],
-	                        'r2_test': [],
-	                        'rms_train':[], 
-	                        'rms_test': [],
-	                        'mae_train': [],
-	                        'mae_test': [],
-	                        'mape_train':[],
-	                        'mape_test':[],
-	                        'cross_val_score' : []})
+		# Generating the Table Frame for metrics
+evluation_table = pd.DataFrame({  'Model_desc':[],
+                        'Model_param':[],
+                        'r2_train': [],
+                        'r2_test': [],
+                        'rms_train':[], 
+                        'rms_test': [],
+                        'mae_train': [],
+                        'mae_test': [],
+                        'mape_train':[],
+                        'mape_test':[],
+                        'cross_val_score' : []})
 
-#normal method
+X_train = trainingData.drop(['FLOOR', 'BUILDINGID','SPACEID','combine','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
+y_train = trainingData[['LONGITUDE','LATITUDE']]
+X_train = X_train.values
+y_train = y_train.values
+rmse_dict = {} 
+
 def evaluate_model(model, model_desc,model_param, X_train, y_train, X_test, y_test):
     global evluation_table
     
@@ -168,12 +173,8 @@ return evluation_table
 
 #Implementing random forest
 class RandomForestRegressor(luigi.Task):
-
-	def requires(self):
-        return 'input1': DataPreProcessing()
-
     def run(self):
-    	print "RandomForestRegressor"
+    	print("RandomForestRegressor")
         classifier = RandomForestRegressor(max_features=10 , n_jobs=-1 )
         self.input()['input11']['output1'].open("r") as infile1,  
                  self.input()['input11']['output2'].open("r") as infile2,
@@ -184,10 +185,31 @@ class RandomForestRegressor(luigi.Task):
 		classifier.fit(X_train, y_train)
 		RandomForestRegressorModel=evaluate_model(classifier, "RandomForestRegressor",classifier,X_train,y_train, X_test , y_test)
 		pickle.dump(RandomForestRegressorModel,f )
-            
+		request = Request('http://127.0.0.1:5000/loadModels/')
+        try:
+            print("Reloading models")
+            response = urlopen(request)
+        except URLError, e:
+            "No model", e
     def output(self):
         return luigi.LocalTarget("/tmp/RandomForestRegressor.pkl")
 
 
 if __name__ == '__main__':
     luigi.run()
+
+class Train(luigi.Task):
+
+    def requires(self):
+        return DataPreProcessing()
+
+    def run(self):
+        sales_model = train_model_ridge(pandas.read_csv(DataPreProcessing().output().path))
+        with open(self.output().path, 'wb') as f:
+            pickle.dump(sales_model,f )
+        request = Request('http://127.0.0.1:5000/loadModels/')
+        try:
+            print("Reloading models")
+            response = urlopen(request)
+        except URLError as e:
+            "No Roseman Sales Prediction API", e
