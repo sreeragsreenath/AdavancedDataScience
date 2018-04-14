@@ -126,8 +126,8 @@ def predict_single_all(data):
 	filename3 = "static/models/ExtraTreesClassifier.pckl"
 	loaded_model3 = pickle.load(open(filename3, 'rb'))
 	pred['location_ExtraTrees'] = loaded_model3.predict(data.reshape(1, -1))
-	filename4 = "static/models/KNeighborsRegressor.pckl"
-	loaded_model4 = pickle.load(open(filename4, 'rb'))
+	# filename4 = "static/models/KNeighborsRegressor.pckl"
+	# loaded_model4 = pickle.load(open(filename4, 'rb'))
 	# pred['latlot_KNeighbors'] = loaded_model4.predict(data.reshape(1, -1))
 	# filename5 = "static/models/KNeighborsClassifier.pckl"
 	# loaded_model5 = pickle.load(open(filename5, 'rb'))
