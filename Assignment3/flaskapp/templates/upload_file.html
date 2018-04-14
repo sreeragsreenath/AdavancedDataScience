@@ -17,6 +17,18 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col s12 m12 l12">
+		                  	<div class="input-field col s12">
+		                		<select name='model'>
+			                      <option value="" disabled selected>Choose your option</option>
+			                      <option value="ExtraTrees">Rank 1 - Extra Tree</option>
+			                      <option value="RandomForest">Rank 2 - RandomForest</option>
+			                      <option value="KNeighbors">Rank 3 - KNeighbors</option>
+		                		</select>
+		                  	</div>
+	                	</div>
+                	</div>
+					<div class="row">
 						<div class="input-field col s12">
 							<button class="btn cyan waves-effect waves-light right" type="submit" name="action">Submit
 								<i class="mdi-content-send right"></i>
@@ -58,7 +70,7 @@
 										</tfoot>
 
 										<tbody>
-											{% for coord in data.results %}
+											{% for coord data.results.latlot %}
 											<tr>
 												<td>{{ coord[0] }}</td>
 												<td>{{ coord[1] }}</td>

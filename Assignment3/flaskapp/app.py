@@ -4,6 +4,9 @@ from flask.ext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
+import jinja2
+env = jinja2.Environment()
+env.globals.update(zip=zip)
 
 # Boto aws connection
 
@@ -78,25 +81,101 @@ plt.rcParams['figure.figsize'] = [10,8]
 import seaborn as sns
 
 def predict_single(data,model):
-	filename = "static/models/RandomForestRegressor.pckl"
 	pred = {}
-	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
-	filename = "static/models/RandomForestClassifier.pckl"
-	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['location'] = loaded_model.predict(data.reshape(1, -1))
-
+	if(model == "RandomForest"):
+		filename = "static/models/RandomForestRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
+		filename = "static/models/RandomForestClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(data.reshape(1, -1))
+	if(model == "ExtraTrees"):
+		filename = "static/models/ExtraTreesRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
+		filename = "static/models/ExtraTreesClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(data.reshape(1, -1))
+	if(model == "KNeighbors"):
+		filename = "static/models/KNeighborsRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
+		filename = "static/models/KNeighborsClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(data.reshape(1, -1))
 	return pred
 
-def predictDf(data):
+def predict_single_all(data):
+	pred = {}
+	filename = "static/models/RandomForestRegressor.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['latlot_RandomForest'] = loaded_model.predict(data.reshape(1, -1))
+	filename1 = "static/models/RandomForestClassifier.pckl"
+	loaded_model1 = pickle.load(open(filename1, 'rb'))
+	pred['location_RandomForest'] = loaded_model1.predict(data.reshape(1, -1))
+	filename2 = "static/models/ExtraTreesRegressor.pckl"
+	loaded_model2 = pickle.load(open(filename2, 'rb'))
+	pred['latlot_ExtraTrees'] = loaded_model2.predict(data.reshape(1, -1))
+	filename3 = "static/models/ExtraTreesClassifier.pckl"
+	loaded_model3 = pickle.load(open(filename3, 'rb'))
+	pred['location_ExtraTrees'] = loaded_model3.predict(data.reshape(1, -1))
+	filename4 = "static/models/KNeighborsRegressor.pckl"
+	loaded_model4 = pickle.load(open(filename4, 'rb'))
+	pred['latlot_KNeighbors'] = loaded_model4.predict(data.reshape(1, -1))
+	filename5 = "static/models/KNeighborsClassifier.pckl"
+	loaded_model5 = pickle.load(open(filename5, 'rb'))
+	pred['location_KNeighbors'] = loaded_model5.predict(data.reshape(1, -1))
+	return pred
+
+def predictDf(data,model):
 	df = data.drop(['FLOOR', 'BUILDINGID','SPACEID','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
 	filename = "static/models/RandomForestRegressor.pckl"
 	pred = {}
+	if(model == "RandomForest"):
+		filename = "static/models/RandomForestRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(df)
+		filename = "static/models/RandomForestClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(df)
+	if(model == "ExtraTrees"):
+		filename = "static/models/ExtraTreesRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(df)
+		filename = "static/models/ExtraTreesClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(df)
+	if(model == "KNeighbors"):
+		filename = "static/models/KNeighborsRegressor.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['latlot'] = loaded_model.predict(df)
+		filename = "static/models/KNeighborsClassifier.pckl"
+		loaded_model = pickle.load(open(filename, 'rb'))
+		pred['location'] = loaded_model.predict(df)
+	return pred
+
+def predictDf_all(data):
+	df = data.drop(['FLOOR', 'BUILDINGID','SPACEID','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
+	filename = "static/models/RandomForestRegressor.pckl"
+	pred = {}
+	filename = "static/models/RandomForestRegressor.pckl"
 	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['latlot'] = loaded_model.predict(df)
+	pred['latlot_RandomForest'] = loaded_model.predict(df)
 	filename = "static/models/RandomForestClassifier.pckl"
 	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['location'] = loaded_model.predict(dfa)
+	pred['location_RandomForest'] = loaded_model.predict(df)
+	filename = "static/models/ExtraTreesRegressor.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['latlot_ExtraTrees'] = loaded_model.predict(df)
+	filename = "static/models/ExtraTreesClassifier.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['location_ExtraTrees'] = loaded_model.predict(df)
+	filename = "static/models/KNeighborsRegressor.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['latlot_KNeighbors'] = loaded_model.predict(df)
+	filename = "static/models/KNeighborsClassifier.pckl"
+	loaded_model = pickle.load(open(filename, 'rb'))
+	pred['location_KNeighbors'] = loaded_model.predict(df)
 	return pred
 
 #---------------------------------------------------------------------
@@ -195,13 +274,14 @@ def singledata():
 	data['isResults'] = False
 	if request.method == 'POST':
 		formdata  = request.form['inputdata']
+		model  = request.form['model']
 		
 		wapArray = formdata.split(",")
 		wapArray = list(map(int, wapArray))
 		wapArray = np.asarray(wapArray)
-		data['pred'] = predict_single(wapArray)
+		data['pred'] = predict_single(wapArray,model)
 		data['isResults'] = True
-		return render_template('upload_single.html', data=data)
+		return render_template('upload_single.html', data=data, model=model)
 	return render_template('upload_single.html', data=data)
 
 def allowed_file(filename):
@@ -221,6 +301,7 @@ def singlefile():
 			print('No file part')
 			return redirect(request.url)
 		file = request.files['file']
+		model  = request.form['model']
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
@@ -232,7 +313,12 @@ def singlefile():
 			#return redirect(url_for('uploaded_file',filename=filename))
 			data['filename'] = filename
 			trainingData= pd.read_csv(file)
-			data['results'] = predictDf(trainingData)
+			data['results'] = predictDf(trainingData,model)
+			data_all = []
+			for k,i in zip(data['results']['latlot'],data['results']['location']):
+				r = [k,i]
+				data_all.append(r)
+			print(data_all)
 			data['resultsArray'] = np.asarray(data['results'])
 			data['isResults'] = True
 			print(data['results'])
@@ -251,7 +337,7 @@ def getLocation():
 			wapArray = list(map(int, wapArray))
 			wapArray = np.asarray(wapArray)
 			data = {}
-			data['pred'] = predict_single(wapArray)
+			data['pred'] = predict_single_all(wapArray)
 			return str(data['pred'])
 		else:
 			return "Incorrect number of parameters \nPlease send in 520 wap position in order of wap001 to wap520"
