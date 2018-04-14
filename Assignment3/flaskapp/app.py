@@ -77,7 +77,7 @@ from matplotlib.colors import ListedColormap
 plt.rcParams['figure.figsize'] = [10,8]
 import seaborn as sns
 
-def predict_single(data):
+def predict_single(data,model):
 	filename = "static/models/RandomForestRegressor.pckl"
 	pred = {}
 	loaded_model = pickle.load(open(filename, 'rb'))
@@ -96,7 +96,7 @@ def predictDf(data):
 	pred['latlot'] = loaded_model.predict(df)
 	filename = "static/models/RandomForestClassifier.pckl"
 	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['location'] = loaded_model.predict(df)
+	pred['location'] = loaded_model.predict(dfa)
 	return pred
 
 #---------------------------------------------------------------------
