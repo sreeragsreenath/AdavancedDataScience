@@ -21,11 +21,12 @@ parser.add_argument("--s3loc",help="put the region you want to select for amazon
 args=parser.parse_args()
 
 
-import boto
-import sys, os
-from boto.s3.key import Key
+
 
 if False:
+	import boto
+	import sys, os
+	from boto.s3.key import Key
 	LOCAL_PATH = 'static/'
 	AWS_ACCESS_KEY_ID = args.awsid
 	AWS_SECRET_ACCESS_KEY = args.awskey
