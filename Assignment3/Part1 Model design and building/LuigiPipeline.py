@@ -75,19 +75,24 @@ class Test_DataIngestion(luigi.Task):
 class DataPreProcessing(luigi.Task):
 
     def requires(self):
-        return AggregateTrainData()
+        return Train_DataIngestion()
 
     def run(self):
-        fb = FeatureBuilder(pandas.read_csv(AggregateTrainData().output().path))
-        dataframe = fb.featurize()
-        print("In Data Pre Processing")
-        print(dataframe.columns)
-        dataframe.to_csv(self.output().path, index=False)
+        fb = FeatureBuilder(pandas.read_csv(Train_DataIngestion().output().path))
+        trainingData = fb.featurize()
+        print "In Data Pre Processing"
+        X_train = trainingData.drop(['FLOOR', 'BUILDINGID','SPACEID','combine','LONGITUDE','LATITUDE','RELATIVEPOSITION','USERID','PHONEID','TIMESTAMP'], axis=1)
+		y_train = trainingData[['LONGITUDE','LATITUDE']]
+		X_train = X_train.values
+		y_train = y_train.values
+        X_train.to_csv(self.output().path, index=False)
+        y_train.to_csv(self.output().path, index=False)
 
     def output(self):
-        return luigi.LocalTarget("/tmp/rossman_sales_train_clean.csv")
+    	 return { 'output1' : luigi.LocalTarget("/tmp/X_train.csv"),
+                  'output2' : luigi.LocalTarget("/tmp/y_train.csv") }
 
-
+#normal method
 def rmse(correct,estimated):
 		    rmse_val = np.sqrt(mean_squared_error(correct,estimated)) 
 		    return rmse_val
@@ -112,64 +117,71 @@ y_train = y_train.values
 rmse_dict = {} 
 
 def evaluate_model(model, model_desc,model_param, X_train, y_train, X_test, y_test):
-		    global evluation_table
-		    
-		    y_train_pred = model.predict(X_train)
-		    y_test_pred = model.predict(X_test)
-		        
-		    
-		    try:
-		        r2_train = r2_score(y_train, y_train_pred)
-		        r2_test = r2_score(y_test, y_test_pred)
-		    except:
-		        r2_train = "not calculated"
-		        r2_test = "not calculated"
-		    try:
-		        rms_train = rmse(y_train, y_train_pred)
-		        rms_test = rmse(y_test, y_test_pred)
-		    except:
-		        rms_train = "not calculated"
-		        rms_test = "not calculated"
-		    try:
-		        mae_train = mean_absolute_error(y_train, y_train_pred)
-		        mae_test = mean_absolute_error(y_test, y_test_pred)
-		    except:
-		        mae_train = "not calculated"
-		        mae_test = "not calculated"
-		    try:
-		        mape_train = np.mean(np.abs((y_train - y_train_pred) / y_train)) * 100
-		        mape_test = np.mean(np.abs((y_test - y_test_pred) / y_test)) * 100
-		    except:
-		        mape_train = "not calculated"
-		        mape_test = "not calculated"
-		    
-		    
-		    try:
-		        cv_score = cross_val_score(model, X_train, y_train, cv=10)
-		        cv_score = cv_score.mean()
-		    except:
-		        cv_score = "Not calulated"
-		        
-		    model_param = pd.DataFrame({'Model_desc':[model_desc],
-		                            'Model_param':[model_param],
-		                            'r2_train': [r2_train],
-		                            'r2_test': [r2_test],
-		                            'rms_train':[rms_train], 
-		                            'rms_test': [rms_test],
-		                            'mae_train': [mae_train],
-		                            'mae_test': [mae_test],
-		                            'mape_train':[mape_train],
-		                            'mape_test':[mape_test],
-		                            'cross_val_score' : [cv_score]})
+    global evluation_table
+    
+    y_train_pred = model.predict(X_train)
+    y_test_pred = model.predict(X_test)
+        
+    
+    try:
+        r2_train = r2_score(y_train, y_train_pred)
+        r2_test = r2_score(y_test, y_test_pred)
+    except:
+        r2_train = "not calculated"
+        r2_test = "not calculated"
+    try:
+        rms_train = rmse(y_train, y_train_pred)
+        rms_test = rmse(y_test, y_test_pred)
+    except:
+        rms_train = "not calculated"
+        rms_test = "not calculated"
+    try:
+        mae_train = mean_absolute_error(y_train, y_train_pred)
+        mae_test = mean_absolute_error(y_test, y_test_pred)
+    except:
+        mae_train = "not calculated"
+        mae_test = "not calculated"
+    try:
+        mape_train = np.mean(np.abs((y_train - y_train_pred) / y_train)) * 100
+        mape_test = np.mean(np.abs((y_test - y_test_pred) / y_test)) * 100
+    except:
+        mape_train = "not calculated"
+        mape_test = "not calculated"
+    
+    
+    try:
+        cv_score = cross_val_score(model, X_train, y_train, cv=10)
+        cv_score = cv_score.mean()
+    except:
+        cv_score = "Not calulated"
+        
+    model_param = pd.DataFrame({'Model_desc':[model_desc],
+                            'Model_param':[model_param],
+                            'r2_train': [r2_train],
+                            'r2_test': [r2_test],
+                            'rms_train':[rms_train], 
+                            'rms_test': [rms_test],
+                            'mae_train': [mae_train],
+                            'mae_test': [mae_test],
+                            'mape_train':[mape_train],
+                            'mape_test':[mape_test],
+                            'cross_val_score' : [cv_score]})
 
-		    evluation_table = evluation_table.append([model_param])
+    evluation_table = evluation_table.append([model_param])
  
 return evluation_table
 
+#Implementing random forest
 class RandomForestRegressor(luigi.Task):
     def run(self):
     	print("RandomForestRegressor")
         classifier = RandomForestRegressor(max_features=10 , n_jobs=-1 )
+        self.input()['input11']['output1'].open("r") as infile1,  
+                 self.input()['input11']['output2'].open("r") as infile2,
+        fb = FeatureBuilder(pandas.read_csv(['input11']['output1'].output().path))
+        X_train = fb.featurize()
+        fb1 = FeatureBuilder(pandas.read_csv(['input11']['output2'].output().path))
+        y_train = fb1.featurize()
 		classifier.fit(X_train, y_train)
 		RandomForestRegressorModel=evaluate_model(classifier, "RandomForestRegressor",classifier,X_train,y_train, X_test , y_test)
 		pickle.dump(RandomForestRegressorModel,f )
