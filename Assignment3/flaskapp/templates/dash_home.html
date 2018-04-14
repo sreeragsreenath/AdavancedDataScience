@@ -1,8 +1,30 @@
 {% extends "base/dashboard_base.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}HomePage{% endblock %}
 {% block content %}
-    <h1>Index</h1>
-    <p class="important">
-      Welcome to Home Page.
-    </p>
+    <h1>Dataset Description</h1>
+    	<div class="card-panel">
+  		<ul>
+    	<li> <b>WAP001-WAP520: </b> Intensity value for Wireless Access Point (AP). AP will be the acronym used for rest of this notebook. Negative integer values from -104 to 0 and +100. Censored data: Positive value 100 used if WAP was not detected. </li>
+
+    	<li><b>Longitude: </b>Longitude. Negative real values from -7695.9387549299299000 to -7299.786516730871000 </li>
+
+    	<li> <b>Latitude:</b> Latitude. Positive real values from 4864745.7450159714 to 4865017.3646842018. </li>
+
+    	<li><b>Floor: </b>Altitude in floors inside the building. Integer values from 0 to 4.</li>
+
+    	<li> <b>BuildingID:</b> ID to identify the building. Measures were taken in three different buildings. Categorical integer values from 0 to 2.</li>
+
+    	<li><b>SpaceID: </b>Internal ID number to identify the Space (office, corridor, classroom) where the capture was taken. Categorical integer values. </li>
+
+    	<li> <b>RelativePosition: </b>Relative position with respect to the Space (1 - Inside, 2 - Outside in Front of the door). Categorical integer values.</li>
+
+    	<li> <b>UserID:</b> User identifier (see below). Categorical integer values. </li>
+
+    	<li><b>PhoneID: </b>Android device identifier (see below). Categorical integer values.</li>
+
+    	<li><b>Timestamp: </b>UNIX Time when the capture was taken. Integer value </li>
+    	</ul>
+
+	    <img src="../static/images/plot.png"></a>
+	</div>
 {% endblock %}
