@@ -37,10 +37,10 @@ Random Forest, ExtraTrees models in using sklearn in Python. Compute RMS, MAPE, 
 
 Model Validation and Selection - Used Crossvalidation
 
-Final Pipeline 
 
 Best Model:
-Random Forest
+Extra Trees Classifier - 86% r -square
+Extra Trees Regressor - 98% r-square
 
 ### INFO
 1. Language used : Python
