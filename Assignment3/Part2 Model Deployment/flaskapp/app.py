@@ -7,8 +7,18 @@ from flask_restful import Resource, Api
 import jinja2
 env = jinja2.Environment()
 env.globals.update(zip=zip)
+import argparse
 
 # Boto aws connection
+
+# adding parse
+parser = argparse.ArgumentParser()
+parser.add_argument("--awsid",help="put your amazon access keys")
+parser.add_argument("--awskey",help="put your amazon secret access key")
+parser.add_argument("--mysqlpass",help="put your amazon secret access key")
+parser.add_argument("--s3loc",help="put the region you want to select for amazon s3")
+
+args=parser.parse_args()
 
 if False:
 
@@ -36,9 +46,9 @@ app = Flask(__name__)
 mysql = MySQL()
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_PASSWORD'] = args.mysqlpass
 app.config['MYSQL_DATABASE_DB'] = 'adsingps'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_HOST'] = '198.199.74.32'
 mysql.init_app(app)
 
 conn = mysql.connect()
@@ -92,13 +102,13 @@ def predict_single(data,model):
 		filename = "static/models/ExtraTreesClassifier.pckl"
 		loaded_model = pickle.load(open(filename, 'rb'))
 		pred['location'] = loaded_model.predict(data.reshape(1, -1))
-	if(model == "KNeighbors"):
-		filename = "static/models/KNeighborsRegressor.pckl"
-		loaded_model = pickle.load(open(filename, 'rb'))
-		pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
-		filename = "static/models/KNeighborsClassifier.pckl"
-		loaded_model = pickle.load(open(filename, 'rb'))
-		pred['location'] = loaded_model.predict(data.reshape(1, -1))
+	# if(model == "KNeighbors"):
+	# 	filename = "static/models/KNeighborsRegressor.pckl"
+	# 	loaded_model = pickle.load(open(filename, 'rb'))
+	# 	pred['latlot'] = loaded_model.predict(data.reshape(1, -1))
+	# 	filename = "static/models/KNeighborsClassifier.pckl"
+	# 	loaded_model = pickle.load(open(filename, 'rb'))
+	# 	pred['location'] = loaded_model.predict(data.reshape(1, -1))
 	return pred
 
 def predict_single_all(data):
@@ -117,10 +127,10 @@ def predict_single_all(data):
 	pred['location_ExtraTrees'] = loaded_model3.predict(data.reshape(1, -1))
 	filename4 = "static/models/KNeighborsRegressor.pckl"
 	loaded_model4 = pickle.load(open(filename4, 'rb'))
-	pred['latlot_KNeighbors'] = loaded_model4.predict(data.reshape(1, -1))
-	filename5 = "static/models/KNeighborsClassifier.pckl"
-	loaded_model5 = pickle.load(open(filename5, 'rb'))
-	pred['location_KNeighbors'] = loaded_model5.predict(data.reshape(1, -1))
+	# pred['latlot_KNeighbors'] = loaded_model4.predict(data.reshape(1, -1))
+	# filename5 = "static/models/KNeighborsClassifier.pckl"
+	# loaded_model5 = pickle.load(open(filename5, 'rb'))
+	# pred['location_KNeighbors'] = loaded_model5.predict(data.reshape(1, -1))
 	return pred
 
 def predictDf(data,model):
@@ -141,13 +151,13 @@ def predictDf(data,model):
 		filename = "static/models/ExtraTreesClassifier.pckl"
 		loaded_model = pickle.load(open(filename, 'rb'))
 		pred['location'] = loaded_model.predict(df)
-	if(model == "KNeighbors"):
-		filename = "static/models/KNeighborsRegressor.pckl"
-		loaded_model = pickle.load(open(filename, 'rb'))
-		pred['latlot'] = loaded_model.predict(df)
-		filename = "static/models/KNeighborsClassifier.pckl"
-		loaded_model = pickle.load(open(filename, 'rb'))
-		pred['location'] = loaded_model.predict(df)
+	# if(model == "KNeighbors"):
+	# 	filename = "static/models/KNeighborsRegressor.pckl"
+	# 	loaded_model = pickle.load(open(filename, 'rb'))
+	# 	pred['latlot'] = loaded_model.predict(df)
+	# 	filename = "static/models/KNeighborsClassifier.pckl"
+	# 	loaded_model = pickle.load(open(filename, 'rb'))
+	# 	pred['location'] = loaded_model.predict(df)
 	return pred
 
 def predictDf_all(data):
@@ -166,12 +176,12 @@ def predictDf_all(data):
 	filename = "static/models/ExtraTreesClassifier.pckl"
 	loaded_model = pickle.load(open(filename, 'rb'))
 	pred['location_ExtraTrees'] = loaded_model.predict(df)
-	filename = "static/models/KNeighborsRegressor.pckl"
-	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['latlot_KNeighbors'] = loaded_model.predict(df)
-	filename = "static/models/KNeighborsClassifier.pckl"
-	loaded_model = pickle.load(open(filename, 'rb'))
-	pred['location_KNeighbors'] = loaded_model.predict(df)
+	# filename = "static/models/KNeighborsRegressor.pckl"
+	# loaded_model = pickle.load(open(filename, 'rb'))
+	# pred['latlot_KNeighbors'] = loaded_model.predict(df)
+	# filename = "static/models/KNeighborsClassifier.pckl"
+	# loaded_model = pickle.load(open(filename, 'rb'))
+	# pred['location_KNeighbors'] = loaded_model.predict(df)
 	return pred
 
 #---------------------------------------------------------------------
@@ -388,5 +398,5 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(host='0.0.0.0')
 
