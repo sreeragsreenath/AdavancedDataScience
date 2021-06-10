@@ -3,7 +3,7 @@ certifi==2017.11.5
 chardet==3.0.4
 cycler==0.10.0
 deap==1.2.2
-Django==2.0.2
+Django==2.2.24
 fpdf==1.7.2
 html2text==2018.1.9
 html5lib==1.0b10
