@@ -26,7 +26,7 @@ pypiwin32==223
 python-dateutil==2.6.1
 pyttsx==1.1
 pytz==2017.3
-pywin32==223
+pywin32==301
 PyYAML==3.12
 reportlab==3.4.0
 requests==2.18.4
