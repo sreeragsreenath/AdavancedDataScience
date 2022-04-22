@@ -21,7 +21,7 @@ pandas==0.22.0
 pdfpages==0.1.0
 Pillow==5.0.0
 pyparsing==2.2.0
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 pypiwin32==223
 python-dateutil==2.6.1
 pyttsx==1.1
